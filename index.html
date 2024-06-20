@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Weather Station</title>
+    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
+    <link rel="stylesheet" href="node_modules/ol/ol.css">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <h1 id="heading">WEATHER STATION</h1>
+    <form id="cityForm" action="getcity" method="post">
+        <div id="searchbox">
+            <input id="city" type="text" placeholder="Enter the city" name="city">
+            <button type="submit" id="search" name="search">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.95-5-5.87-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.92 2.56 5.4 5.34 5.87a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+            </button>
+        </div>
+    </form>
+    <div class="error-message" id="error-message"></div>
+    <a class="skiplink" href="#map">Go to map</a>
+    <div id="map" class="map" tabindex="0"></div>
+
+    <script type="module" src="index.js"></script>
+  </body>
+</html>
