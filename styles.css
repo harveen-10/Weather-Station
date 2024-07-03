@@ -1,7 +1,7 @@
 #heading{
     text-align: center;
     font-family: 'Raleway';
-    font-size: 30px;
+    font-size: 40px;
     text-decoration: underline;
 }
 
@@ -58,4 +58,20 @@ a.skiplink:focus {
 #error-message{
     color: red;
     margin-left: 50px;
+}
+
+#forcast{
+    text-align: center;
+    font-family: 'Raleway';
+    font-size: 30px;
+    margin-top: 60px;
+}
+
+.chart-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    width: 100vw; 
+    margin-top: 60px;
 }

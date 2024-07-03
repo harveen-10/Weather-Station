@@ -12,6 +12,7 @@ import Icon from 'ol/style/Icon.js';
 import Overlay from 'ol/Overlay.js';
 import axios from "axios";
 import config from './config.js';
+import Chart from 'chart.js/auto'
 
 const map = new Map({
   layers: [
@@ -51,11 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const response=await axios.get(url);
             const data=response.data;
-
-            console.log('City entered:', cityInput);
-            console.log("weather: ", data.weather[0].main);
-            console.log("description: ", data.weather[0].description);
-            console.log("temperature: ", data.main.temp);
             
             vectorSource.clear();
 
@@ -101,6 +97,66 @@ document.addEventListener('DOMContentLoaded', function() {
             overlay.setPosition(fromLonLat([data.coord.lon, data.coord.lat]));
 
             clearErrorMessage();
+
+            const newurl=`https://api.openweathermap.org/data/2.5/forecast?lat=${data.coord.lat}&lon=${data.coord.lon}&appid=${key}`;
+
+            const newresponse=await axios.get(newurl);
+            const newdata=newresponse.data;
+
+            let temperatures=[];
+            let dates=[];
+            let index=0;
+            let currcount=0;
+            let currtemp=0;
+            let currdate=newdata.list[0].dt_txt[9];
+
+            for(const item of newdata.list){
+                if(item.dt_txt[9]==currdate){
+                    currcount++;
+                    currtemp+=item.main.temp;
+                }
+                else{
+                    dates[index]=item.dt_txt.slice(0, 10);
+                    temperatures[index]=((currtemp/currcount)-273.15).toFixed(2);
+                    currcount=0;
+                    currtemp=0;
+                    currdate=item.dt_txt[9];
+                    index++;
+                }
+            }
+
+            const ctx = document.getElementById('myChart');
+            const existingChart = Chart.getChart(ctx);
+
+            if (existingChart) {
+                existingChart.destroy(); 
+            }
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                      label: 'Average Weather Prediction',
+                      data: temperatures,
+                      fill: false,
+                      borderColor: 'rgb(75, 192, 192)',
+                      tension: 0.1
+                    }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Weather Forcast',
+                            font: {
+                                size: 50
+                            }
+                        }
+                    }
+                }
+            });
+
 
             return{
                 name: data.name,
